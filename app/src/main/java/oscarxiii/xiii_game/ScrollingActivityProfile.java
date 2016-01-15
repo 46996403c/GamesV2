@@ -1,4 +1,4 @@
-package oscarxiii.xiii_game.json.SteamPlayerAPI;
+package oscarxiii.xiii_game;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -6,8 +6,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-
-import oscarxiii.xiii_game.R;
 
 public class ScrollingActivityProfile extends AppCompatActivity {
 

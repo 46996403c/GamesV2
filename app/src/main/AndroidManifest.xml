@@ -27,7 +27,7 @@
                 android:value="oscarxiii.xiii_game.MainActivity" />
         </activity>
         <activity
-            android:name=".json.SteamPlayerAPI.ScrollingActivityProfile"
+            android:name=".ScrollingActivityProfile"
             android:label="@string/title_activity_scrolling_activity_profile"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
