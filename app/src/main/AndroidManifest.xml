@@ -26,6 +26,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="oscarxiii.xiii_game.MainActivity" />
         </activity>
+        <activity
+            android:name=".json.SteamPlayerAPI.ScrollingActivityProfile"
+            android:label="@string/title_activity_scrolling_activity_profile"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="oscarxiii.xiii_game.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
