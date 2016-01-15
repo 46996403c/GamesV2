@@ -32,7 +32,7 @@ public class LlamadaApi {
             .build();
 
     //Creamos el servicio
-    ClientTheMovieDbInterface service = retrofit.create(ClientTheMovieDbInterface.class);
+    LlamadaPerfilInterface service = retrofit.create(LlamadaPerfilInterface.class);
 
     public LlamadaApi(){
         super();
@@ -41,18 +41,18 @@ public class LlamadaApi {
     public void getsteamID(final TextView adapter, String nombre_perfil){
 
         //Hacemos una llamada
-        Call<SteamIDs> moviesCall = service.steamIDs(nombre_perfil);
-        moviesCall.enqueue(new Callback<SteamIDs>() {
+        Call<SteamIDs> IDCall = service.steamIDs(nombre_perfil);
+        IDCall.enqueue(new Callback<SteamIDs>() {
             @Override
             public void onResponse(Response<SteamIDs> response, Retrofit retrofit) {
                 if(response.isSuccess()) {
-                    SteamIDs movies = response.body();
-                    id = movies.getResponse().getSteamid();
+                    SteamIDs perfilID = response.body();
+                    id = perfilID.getResponse().getSteamid();
                     System.out.println("--------------------" + id);
 
-                    Call<SteamPlayer> moviesCall=service.steamPerfil(id);
+                    Call<SteamPlayer> PerfilCall=service.steamPerfil(id);
 
-                    moviesCall.enqueue(new Callback<SteamPlayer>() {
+                    PerfilCall.enqueue(new Callback<SteamPlayer>() {
                         @Override
                         public void onResponse(Response<SteamPlayer> response, Retrofit retrofit) {
                             if(response.isSuccess()) {
@@ -109,7 +109,7 @@ public class LlamadaApi {
     }
 }
 
-interface ClientTheMovieDbInterface
+interface LlamadaPerfilInterface
 {
     @GET("ResolveVanityURL/v0001/?key=9DED78B02A80DE9A7062EB2822D42C11")
     Call<SteamIDs> steamIDs(
