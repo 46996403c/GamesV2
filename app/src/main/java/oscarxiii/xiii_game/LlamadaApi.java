@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import oscarxiii.xiii_game.json.SteamAppListAPI.SteamAppList;
 import oscarxiii.xiii_game.json.SteamIDsAPI.SteamIDs;
+import oscarxiii.xiii_game.json.SteamLogrosGeneralesAPI.SteamLogrosGenerales;
 import oscarxiii.xiii_game.json.SteamPlayerAPI.SteamPlayer;
 import retrofit.Call;
 import retrofit.Callback;
@@ -53,6 +54,7 @@ public class LlamadaApi {
     //Creamos los servicios
     LlamadaPerfilInterface servicePerfil = retrofit.create(LlamadaPerfilInterface.class);
     LlamadaAppsInterface serviceApps = retrofit.create(LlamadaAppsInterface.class);
+    LlamadaLogrosGeneralesInterface serviceLogrosGenerales = retrofit.create(LlamadaLogrosGeneralesInterface.class);
 
     public LlamadaApi(){
         super();
@@ -131,7 +133,6 @@ public class LlamadaApi {
 
 
     public void getSteamApps(){
-
         //Hacemos una llamada
         Call<SteamAppList> AppsCall = serviceApps.steamApps();
         AppsCall.enqueue(new Callback<SteamAppList>() {
@@ -152,24 +153,49 @@ public class LlamadaApi {
             }
         });
     }
+
+    public void getSteamLogrosGenerales(String appid){
+        //Hacemos una llamada
+        Call<SteamLogrosGenerales> LogrosGenCall = serviceLogrosGenerales.steamLogrosGeneral(appid);
+        LogrosGenCall.enqueue(new Callback<SteamLogrosGenerales>() {
+            @Override
+            public void onResponse(Response<SteamLogrosGenerales> response, Retrofit retrofit) {
+                if(response.isSuccess()) {
+                    SteamLogrosGenerales appLogro = response.body();
+                    System.out.println("Nombre Juego: "+appLogro.getGame().getGameName());
+                    for (int i=0; i<appLogro.getGame().getAvailableGameStats().getAchievements().size(); i++){
+                        System.out.println("Nombre: " + appLogro.getGame().getAvailableGameStats().getAchievements().get(i).getDisplayName());
+                        System.out.println("Icono: " + appLogro.getGame().getAvailableGameStats().getAchievements().get(i).getIcon());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.w(null, Arrays.toString(t.getStackTrace()));
+            }
+        });
+    }
 }
 
-interface LlamadaPerfilInterface
-{
+interface LlamadaPerfilInterface {
     @GET("ISteamUser/ResolveVanityURL/v0001/?key=9DED78B02A80DE9A7062EB2822D42C11")
     Call<SteamIDs> steamIDs(
-
             @Query("vanityurl") String vanityurl
     );
 
     @GET("ISteamUser/GetPlayerSummaries/v0002/?key=9DED78B02A80DE9A7062EB2822D42C11")
     Call<SteamPlayer> steamPerfil(
-
             @Query("steamids") String steamids
     );
 }
-interface LlamadaAppsInterface
-{
+interface LlamadaAppsInterface{
     @GET("ISteamApps/GetAppList/v2")
     Call<SteamAppList> steamApps();
+}
+interface LlamadaLogrosGeneralesInterface{
+    @GET("ISteamUserStats/GetSchemaForGame/v2/?key=9DED78B02A80DE9A7062EB2822D42C11")
+    Call<SteamLogrosGenerales> steamLogrosGeneral(
+            @Query("appid") String appid
+    );
 }
