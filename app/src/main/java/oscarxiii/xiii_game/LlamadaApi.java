@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import java.util.Arrays;
 
+import oscarxiii.xiii_game.json.SteamAppListAPI.SteamAppList;
 import oscarxiii.xiii_game.json.SteamIDsAPI.SteamIDs;
 import oscarxiii.xiii_game.json.SteamPlayerAPI.SteamPlayer;
 import retrofit.Call;
@@ -40,7 +41,7 @@ public class LlamadaApi {
     //http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=9DED78B02A80DE9A7062EB2822D42C11&vanityurl=oscarXIII
     //http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=9DED78B02A80DE9A7062EB2822D42C11&steamids=76561198011227808
     final String api_key ="9DED78B02A80DE9A7062EB2822D42C11";
-    final String URL_base = "http://api.steampowered.com/ISteamUser/";
+    final String URL_base = "http://api.steampowered.com/";
     String id = "";
 
     //Conectamos con la api
@@ -49,8 +50,9 @@ public class LlamadaApi {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
-    //Creamos el servicio
-    LlamadaPerfilInterface service = retrofit.create(LlamadaPerfilInterface.class);
+    //Creamos los servicios
+    LlamadaPerfilInterface servicePerfil = retrofit.create(LlamadaPerfilInterface.class);
+    LlamadaAppsInterface serviceApps = retrofit.create(LlamadaAppsInterface.class);
 
     public LlamadaApi(){
         super();
@@ -59,21 +61,21 @@ public class LlamadaApi {
     public void getsteamID(final TextView adapter, String nombre_perfil){
 
         //Hacemos una llamada
-        Call<SteamIDs> IDCall = service.steamIDs(nombre_perfil);
+        Call<SteamIDs> IDCall = servicePerfil.steamIDs(nombre_perfil);
         IDCall.enqueue(new Callback<SteamIDs>() {
             @Override
             public void onResponse(Response<SteamIDs> response, Retrofit retrofit) {
-                if(response.isSuccess()) {
+                if (response.isSuccess()) {
                     SteamIDs perfilID = response.body();
                     id = perfilID.getResponse().getSteamid();
                     System.out.println("--------------------" + id);
 
-                    Call<SteamPlayer> PerfilCall=service.steamPerfil(id);
+                    Call<SteamPlayer> PerfilCall = servicePerfil.steamPerfil(id);
 
                     PerfilCall.enqueue(new Callback<SteamPlayer>() {
                         @Override
                         public void onResponse(Response<SteamPlayer> response, Retrofit retrofit) {
-                            if(response.isSuccess()) {
+                            if (response.isSuccess()) {
                                 SteamPlayer player = response.body();
                                 steamid = player.getResponse().getPlayers().get(0).getSteamid();
                                 communityvisibilitystate = player.getResponse().getPlayers().get(0).getCommunityvisibilitystate();
@@ -111,6 +113,7 @@ public class LlamadaApi {
                                 System.out.println(loccityid);
                             }
                         }
+
                         @Override
                         public void onFailure(Throwable t) {
                             Log.w(null, Arrays.toString(t.getStackTrace()));
@@ -125,19 +128,48 @@ public class LlamadaApi {
             }
         });
     }
+
+
+    public void getSteamApps(){
+
+        //Hacemos una llamada
+        Call<SteamAppList> AppsCall = serviceApps.steamApps();
+        AppsCall.enqueue(new Callback<SteamAppList>() {
+            @Override
+            public void onResponse(Response<SteamAppList> response, Retrofit retrofit) {
+                if(response.isSuccess()) {
+                    SteamAppList appName = response.body();
+                    for (int i=0; i<appName.getApplist().getApps().size(); i++){
+                        System.out.println("Nombre: " + appName.getApplist().getApps().get(i).getName());
+                        System.out.println("ID de la App: " + appName.getApplist().getApps().get(i).getAppid()+"\n");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.w(null, Arrays.toString(t.getStackTrace()));
+            }
+        });
+    }
 }
 
 interface LlamadaPerfilInterface
 {
-    @GET("ResolveVanityURL/v0001/?key=9DED78B02A80DE9A7062EB2822D42C11")
+    @GET("ISteamUser/ResolveVanityURL/v0001/?key=9DED78B02A80DE9A7062EB2822D42C11")
     Call<SteamIDs> steamIDs(
 
             @Query("vanityurl") String vanityurl
     );
 
-    @GET("GetPlayerSummaries/v0002/?key=9DED78B02A80DE9A7062EB2822D42C11")
+    @GET("ISteamUser/GetPlayerSummaries/v0002/?key=9DED78B02A80DE9A7062EB2822D42C11")
     Call<SteamPlayer> steamPerfil(
 
             @Query("steamids") String steamids
     );
+}
+interface LlamadaAppsInterface
+{
+    @GET("ISteamApps/GetAppList/v2")
+    Call<SteamAppList> steamApps();
 }
