@@ -19,6 +19,24 @@ import retrofit.http.Query;
  * Created by Usuario on 11/01/2016.
  */
 public class LlamadaApi {
+    String steamid = null;
+    int communityvisibilitystate = 0;
+    int profilestate = 0;
+    String personaname = null;
+    int lastlogoff = 0;
+    String profileurl = null;
+    String avatar = null;
+    String avatarmedium = null;
+    String avatarfull = null;
+    int personastate = 0;
+    String realname = null;
+    String primaryclanid = null;
+    int timecreated = 0;
+    int personastateflags = 0;
+    String loccountrycode = null;
+    String locstatecode = null;
+    int loccityid = 0;
+
     //http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=9DED78B02A80DE9A7062EB2822D42C11&vanityurl=oscarXIII
     //http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=9DED78B02A80DE9A7062EB2822D42C11&steamids=76561198011227808
     final String api_key ="9DED78B02A80DE9A7062EB2822D42C11";
@@ -57,23 +75,23 @@ public class LlamadaApi {
                         public void onResponse(Response<SteamPlayer> response, Retrofit retrofit) {
                             if(response.isSuccess()) {
                                 SteamPlayer player = response.body();
-                                String steamid = player.getResponse().getPlayers().get(0).getSteamid();
-                                int communityvisibilitystate = player.getResponse().getPlayers().get(0).getCommunityvisibilitystate();
-                                int profilestate = player.getResponse().getPlayers().get(0).getProfilestate();
-                                String personaname = player.getResponse().getPlayers().get(0).getPersonaname();
-                                int lastlogoff = player.getResponse().getPlayers().get(0).getLastlogoff();
-                                String profileurl = player.getResponse().getPlayers().get(0).getProfileurl();
-                                String avatar = player.getResponse().getPlayers().get(0).getAvatar();
-                                String avatarmedium = player.getResponse().getPlayers().get(0).getAvatarmedium();
-                                String avatarfull = player.getResponse().getPlayers().get(0).getAvatarfull();
-                                int personastate = player.getResponse().getPlayers().get(0).getPersonastate();
-                                String realname = player.getResponse().getPlayers().get(0).getRealname();
-                                String primaryclanid = player.getResponse().getPlayers().get(0).getPrimaryclanid();
-                                int timecreated = player.getResponse().getPlayers().get(0).getTimecreated();
-                                int personastateflags = player.getResponse().getPlayers().get(0).getPersonastateflags();
-                                String loccountrycode = player.getResponse().getPlayers().get(0).getLoccountrycode();
-                                String locstatecode = player.getResponse().getPlayers().get(0).getLocstatecode();
-                                int loccityid = player.getResponse().getPlayers().get(0).getLoccityid();
+                                steamid = player.getResponse().getPlayers().get(0).getSteamid();
+                                communityvisibilitystate = player.getResponse().getPlayers().get(0).getCommunityvisibilitystate();
+                                profilestate = player.getResponse().getPlayers().get(0).getProfilestate();
+                                personaname = player.getResponse().getPlayers().get(0).getPersonaname();
+                                lastlogoff = player.getResponse().getPlayers().get(0).getLastlogoff();
+                                profileurl = player.getResponse().getPlayers().get(0).getProfileurl();
+                                avatar = player.getResponse().getPlayers().get(0).getAvatar();
+                                avatarmedium = player.getResponse().getPlayers().get(0).getAvatarmedium();
+                                avatarfull = player.getResponse().getPlayers().get(0).getAvatarfull();
+                                personastate = player.getResponse().getPlayers().get(0).getPersonastate();
+                                realname = player.getResponse().getPlayers().get(0).getRealname();
+                                primaryclanid = player.getResponse().getPlayers().get(0).getPrimaryclanid();
+                                timecreated = player.getResponse().getPlayers().get(0).getTimecreated();
+                                personastateflags = player.getResponse().getPlayers().get(0).getPersonastateflags();
+                                loccountrycode = player.getResponse().getPlayers().get(0).getLoccountrycode();
+                                locstatecode = player.getResponse().getPlayers().get(0).getLocstatecode();
+                                loccityid = player.getResponse().getPlayers().get(0).getLoccityid();
                                 System.out.println(steamid);
                                 System.out.println(communityvisibilitystate);
                                 System.out.println(profilestate);
