@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import oscarxiii.xiii_game.json.SteamAppListAPI.SteamAppList;
 import oscarxiii.xiii_game.json.SteamIDsAPI.SteamIDs;
+import oscarxiii.xiii_game.json.SteamJuegosCompradosAPI.SteamJuegosComprados;
 import oscarxiii.xiii_game.json.SteamLogrosGeneralesAPI.SteamLogrosGenerales;
 import oscarxiii.xiii_game.json.SteamPlayerAPI.SteamPlayer;
 import retrofit.Call;
@@ -17,9 +18,6 @@ import retrofit.Retrofit;
 import retrofit.http.GET;
 import retrofit.http.Query;
 
-/**
- * Created by Usuario on 11/01/2016.
- */
 public class LlamadaApi {
     String steamid = null;
     int communityvisibilitystate = 0;
@@ -55,6 +53,7 @@ public class LlamadaApi {
     LlamadaPerfilInterface servicePerfil = retrofit.create(LlamadaPerfilInterface.class);
     LlamadaAppsInterface serviceApps = retrofit.create(LlamadaAppsInterface.class);
     LlamadaLogrosGeneralesInterface serviceLogrosGenerales = retrofit.create(LlamadaLogrosGeneralesInterface.class);
+    LlamadaAppsCompradasInterface serviceAppsCompradas = retrofit.create(LlamadaAppsCompradasInterface.class);
 
     public LlamadaApi(){
         super();
@@ -176,6 +175,29 @@ public class LlamadaApi {
             }
         });
     }
+
+    public void getSteamAppsCompradas(String appid){
+        //Hacemos una llamada
+        Call<SteamJuegosComprados> LogrosGenCall = serviceAppsCompradas.steamAppsCompradas(appid);
+        LogrosGenCall.enqueue(new Callback<SteamJuegosComprados>() {
+            @Override
+            public void onResponse(Response<SteamJuegosComprados> response, Retrofit retrofit) {
+                if(response.isSuccess()) {
+                    SteamJuegosComprados appsCompradas = response.body();
+                    System.out.println("Numero de juegos comprados: " + appsCompradas.getResponse().getGameCount());
+                    for (int i=0; i<appsCompradas.getResponse().getGames().size(); i++){
+                        System.out.println("Nombre: " + appsCompradas.getResponse().getGames().get(i).getAppid());
+                        System.out.println("Tiempo total: " + appsCompradas.getResponse().getGames().get(i).getPlaytimeForever());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.w(null, Arrays.toString(t.getStackTrace()));
+            }
+        });
+    }
 }
 
 interface LlamadaPerfilInterface {
@@ -197,5 +219,12 @@ interface LlamadaLogrosGeneralesInterface{
     @GET("ISteamUserStats/GetSchemaForGame/v2/?key=9DED78B02A80DE9A7062EB2822D42C11")
     Call<SteamLogrosGenerales> steamLogrosGeneral(
             @Query("appid") String appid
+    );
+}
+
+interface LlamadaAppsCompradasInterface{
+    @GET("IPlayerService/GetOwnedGames/v0001/?key=9DED78B02A80DE9A7062EB2822D42C11")
+    Call<SteamJuegosComprados> steamAppsCompradas(
+            @Query("steamids") String steamids
     );
 }
