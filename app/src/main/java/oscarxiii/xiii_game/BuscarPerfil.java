@@ -9,13 +9,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class BuscarPerfil extends AppCompatActivity {
-
+    MainActivity main = new MainActivity();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buscar_perfil);
         EditText buscador = (EditText) findViewById(R.id.Buscador);
-        buscador.setText("oscarXIII");
+        buscador.setText("76561198011227808");
         Button bt = (Button) findViewById(R.id.BuscarBT);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -25,7 +25,12 @@ public class BuscarPerfil extends AppCompatActivity {
 
                 //String mierda = String.valueOf(buscador.setText(texto.getText()));
                 LlamadaApi llamada = new LlamadaApi();
-                llamada.getsteamID(texto, String.valueOf(buscador.getText()));
+                //llamada.getsteamID(texto, String.valueOf(buscador.getText()));
+                //llamada.getSteamApps();
+                //llamada.getsteamID();
+                //llamada.getSteamAmigos(String.valueOf(buscador.getText()));
+                //System.out.println("VAMOS A VEEE: " + main.setNombreUser(null));
+                //System.out.println("VAMOS A VEEE2222: " + main.nombre);
                 Intent intent = new Intent(BuscarPerfil.this, ScrollingActivityProfile.class);
                 startActivity(intent);
 
