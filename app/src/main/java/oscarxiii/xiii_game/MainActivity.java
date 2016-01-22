@@ -115,10 +115,10 @@ public class MainActivity extends AppCompatActivity
             llamada.getSteamAmigos(nombre);
             startActivity(intent);
 
-        } else if (id == R.id.nav_slideshow) { //Juegos
+        } else if (id == R.id.nav_slideshow) { //Juegos comprados
             intent = new Intent(MainActivity.this, ScrollingActivityProfile.class);
             LlamadaApi llamada = new LlamadaApi();
-            llamada.getsteamID(nombre);
+            llamada.getSteamAppsCompradas(nombre);
             startActivity(intent);
 
         } else if (id == R.id.nav_manage) {//Logros particulares //AHORA SON LAS OPCIONES
@@ -126,6 +126,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.nav_share) { //Juegos totales
+            LlamadaApi llamada = new LlamadaApi();
+            llamada.getSteamApps();
 
         } else if (id == R.id.nav_send) { // Logros generales
 
