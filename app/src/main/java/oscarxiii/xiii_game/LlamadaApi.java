@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import java.util.Arrays;
 
+import oscarxiii.xiii_game.json.SteamAmigosAPI.SteamAmigos;
 import oscarxiii.xiii_game.json.SteamAppListAPI.SteamAppList;
 import oscarxiii.xiii_game.json.SteamIDsAPI.SteamIDs;
 import oscarxiii.xiii_game.json.SteamJuegosCompradosAPI.SteamJuegosComprados;
@@ -54,6 +55,7 @@ public class LlamadaApi {
     LlamadaAppsInterface serviceApps = retrofit.create(LlamadaAppsInterface.class);
     LlamadaLogrosGeneralesInterface serviceLogrosGenerales = retrofit.create(LlamadaLogrosGeneralesInterface.class);
     LlamadaAppsCompradasInterface serviceAppsCompradas = retrofit.create(LlamadaAppsCompradasInterface.class);
+    LlamadaAmigosInterface serviceAmigos = retrofit.create(LlamadaAmigosInterface.class);
 
     public LlamadaApi(){
         super();
@@ -198,6 +200,46 @@ public class LlamadaApi {
             }
         });
     }
+
+    public void getSteamAmigos(String steamid){
+        //Hacemos una llamada
+        Call<SteamAmigos> AmigosCall = serviceAmigos.steamAmigos(steamid);
+        AmigosCall.enqueue(new Callback<SteamAmigos>() {
+            @Override
+            public void onResponse(Response<SteamAmigos> response, Retrofit retrofit) {
+                if(response.isSuccess()) {
+                    SteamAmigos listaAmigos = response.body();
+                    System.out.println("Numero de Amigos: " + listaAmigos.getFriendslist().getFriends().size());
+                    for (int i=0; i<listaAmigos.getFriendslist().getFriends().size(); i++){
+
+                        Call<SteamPlayer> NombreCall = servicePerfil.steamPerfil(listaAmigos.getFriendslist().getFriends().get(i).getSteamid());
+
+                        NombreCall.enqueue(new Callback<SteamPlayer>() {
+                            @Override
+                            public void onResponse(Response<SteamPlayer> response, Retrofit retrofit) {
+                                if (response.isSuccess()) {
+                                    SteamPlayer player = response.body();
+                                    System.out.println("Nombre: " + player.getResponse().getPlayers().get(0).getPersonaname());
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Throwable t) {
+                                Log.w(null, Arrays.toString(t.getStackTrace()));
+                            }
+                        });
+                        System.out.println("Tiempo de amigos: " + listaAmigos.getFriendslist().getFriends().get(i).getFriendSince());
+                        System.out.println("Relacion: " + listaAmigos.getFriendslist().getFriends().get(i).getRelationship());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.w(null, Arrays.toString(t.getStackTrace()));
+            }
+        });
+    }
 }
 
 interface LlamadaPerfilInterface {
@@ -221,10 +263,15 @@ interface LlamadaLogrosGeneralesInterface{
             @Query("appid") String appid
     );
 }
-
 interface LlamadaAppsCompradasInterface{
     @GET("IPlayerService/GetOwnedGames/v0001/?key=9DED78B02A80DE9A7062EB2822D42C11")
     Call<SteamJuegosComprados> steamAppsCompradas(
-            @Query("steamids") String steamids
+            @Query("steamid") String steamid
+    );
+}
+interface LlamadaAmigosInterface{
+    @GET("ISteamUser/GetFriendList/v0001/?key=9DED78B02A80DE9A7062EB2822D42C11")
+    Call<SteamAmigos> steamAmigos(
+            @Query("steamid") String steamid
     );
 }
