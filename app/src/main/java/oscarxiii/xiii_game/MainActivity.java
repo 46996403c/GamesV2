@@ -1,7 +1,9 @@
 package oscarxiii.xiii_game;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -17,6 +19,7 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Intent intent;
+    String nombre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,23 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //System.out.println("nana===ANTES " + nombre);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        if (pref.contains("SteamName")) {
+            nombre = pref.getString("SteamName", "0");
+            System.out.println("nana=== " + nombre);
+            setNombreUser(nombre);
+        } else {
+            String nombre = "oscarXIII";
+        }
+        //System.out.println("nana===DEPUES " + nombre);
+        System.out.println("setNombreUser() " + setNombreUser(null));
+    }
+
+    public String setNombreUser(String nombre) {
+        String user = nombre;
+        return user;
     }
 
     @Override
@@ -84,20 +104,22 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_camera) {//Perfil
             intent = new Intent(MainActivity.this, ScrollingActivityProfile.class);
+            LlamadaApi llamada = new LlamadaApi();
+            llamada.getsteamID(nombre);
             startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_gallery) { //Juegos
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_slideshow) { //Amigos
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_manage) {//Logros particulares //AHORA SON LAS OPCIONES
             intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_share) { //Juegos totales
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_send) { // Logros generales
 
         }
 
@@ -105,4 +127,5 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

@@ -1,7 +1,7 @@
 package oscarxiii.xiii_game;
 
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.TextView;
 
 import java.util.Arrays;
 
@@ -19,7 +19,7 @@ import retrofit.Retrofit;
 import retrofit.http.GET;
 import retrofit.http.Query;
 
-public class LlamadaApi {
+public class LlamadaApi extends AppCompatActivity {
     String steamid = null;
     int communityvisibilitystate = 0;
     int profilestate = 0;
@@ -61,10 +61,10 @@ public class LlamadaApi {
         super();
     }
     //public void getsteamID(final ArrayAdapter adapter, String nombre_perfil){
-    public void getsteamID(final TextView adapter, String nombre_perfil){
-
+    public void getsteamID(String nombrePerfil){
+        System.out.println("\n\n=?????????=========????????========= " + nombrePerfil);
         //Hacemos una llamada
-        Call<SteamIDs> IDCall = servicePerfil.steamIDs(nombre_perfil);
+        Call<SteamIDs> IDCall = servicePerfil.steamIDs(nombrePerfil);
         IDCall.enqueue(new Callback<SteamIDs>() {
             @Override
             public void onResponse(Response<SteamIDs> response, Retrofit retrofit) {
