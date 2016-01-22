@@ -201,44 +201,62 @@ public class LlamadaApi extends AppCompatActivity {
         });
     }
 
-    public void getSteamAmigos(String steamid){
+    public void getSteamAmigos(String nombrePerfil){
         //Hacemos una llamada
-        Call<SteamAmigos> AmigosCall = serviceAmigos.steamAmigos(steamid);
-        AmigosCall.enqueue(new Callback<SteamAmigos>() {
+        Call<SteamIDs> IDCall = servicePerfil.steamIDs(nombrePerfil);
+        IDCall.enqueue(new Callback<SteamIDs>() {
             @Override
-            public void onResponse(Response<SteamAmigos> response, Retrofit retrofit) {
-                if(response.isSuccess()) {
-                    SteamAmigos listaAmigos = response.body();
-                    System.out.println("Numero de Amigos: " + listaAmigos.getFriendslist().getFriends().size());
-                    for (int i=0; i<listaAmigos.getFriendslist().getFriends().size(); i++){
+            public void onResponse(Response<SteamIDs> response, Retrofit retrofit) {
+                if (response.isSuccess()) {
+                    SteamIDs perfilID = response.body();
+                    Call<SteamAmigos> AmigosCall = serviceAmigos.steamAmigos(perfilID.getResponse().getSteamid());
+                    AmigosCall.enqueue(new Callback<SteamAmigos>() {
+                        @Override
+                        public void onResponse(Response<SteamAmigos> response, Retrofit retrofit) {
+                            if(response.isSuccess()) {
+                                SteamAmigos listaAmigos = response.body();
+                                System.out.println("Numero de Amigos: " + listaAmigos.getFriendslist().getFriends().size());
+                                for (int i=0; i<listaAmigos.getFriendslist().getFriends().size(); i++){
 
-                        Call<SteamPlayer> NombreCall = servicePerfil.steamPerfil(listaAmigos.getFriendslist().getFriends().get(i).getSteamid());
+                                    Call<SteamPlayer> NombreCall = servicePerfil.steamPerfil(listaAmigos.getFriendslist().getFriends().get(i).getSteamid());
 
-                        NombreCall.enqueue(new Callback<SteamPlayer>() {
-                            @Override
-                            public void onResponse(Response<SteamPlayer> response, Retrofit retrofit) {
-                                if (response.isSuccess()) {
-                                    SteamPlayer player = response.body();
-                                    System.out.println("Nombre: " + player.getResponse().getPlayers().get(0).getPersonaname());
+                                    NombreCall.enqueue(new Callback<SteamPlayer>() {
+                                        @Override
+                                        public void onResponse(Response<SteamPlayer> response, Retrofit retrofit) {
+                                            if (response.isSuccess()) {
+                                                SteamPlayer player = response.body();
+                                                System.out.println("Nombre: " + player.getResponse().getPlayers().get(0).getPersonaname());
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Throwable t) {
+                                            Log.w(null, Arrays.toString(t.getStackTrace()));
+                                        }
+                                    });
+                                    System.out.println("Tiempo de amigos: " + listaAmigos.getFriendslist().getFriends().get(i).getFriendSince());
+                                    System.out.println("Relacion: " + listaAmigos.getFriendslist().getFriends().get(i).getRelationship());
                                 }
                             }
-
-                            @Override
-                            public void onFailure(Throwable t) {
-                                Log.w(null, Arrays.toString(t.getStackTrace()));
-                            }
-                        });
-                        System.out.println("Tiempo de amigos: " + listaAmigos.getFriendslist().getFriends().get(i).getFriendSince());
-                        System.out.println("Relacion: " + listaAmigos.getFriendslist().getFriends().get(i).getRelationship());
-                    }
+                        }
+                        @Override
+                        public void onFailure(Throwable t) {
+                            Log.w(null, Arrays.toString(t.getStackTrace()));
+                        }
+                    });
                 }
             }
-
             @Override
             public void onFailure(Throwable t) {
                 Log.w(null, Arrays.toString(t.getStackTrace()));
             }
         });
+
+
+
+
+
+
     }
 }
 

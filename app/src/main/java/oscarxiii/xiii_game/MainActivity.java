@@ -109,9 +109,17 @@ public class MainActivity extends AppCompatActivity
             LlamadaApi llamada = new LlamadaApi();
             llamada.getsteamID(nombre);
             startActivity(intent);
-        } else if (id == R.id.nav_gallery) { //Juegos
+        } else if (id == R.id.nav_gallery) { //Amigos
+            intent = new Intent(MainActivity.this, ScrollingActivityProfile.class);
+            LlamadaApi llamada = new LlamadaApi();
+            llamada.getSteamAmigos(nombre);
+            startActivity(intent);
 
-        } else if (id == R.id.nav_slideshow) { //Amigos
+        } else if (id == R.id.nav_slideshow) { //Juegos
+            intent = new Intent(MainActivity.this, ScrollingActivityProfile.class);
+            LlamadaApi llamada = new LlamadaApi();
+            llamada.getsteamID(nombre);
+            startActivity(intent);
 
         } else if (id == R.id.nav_manage) {//Logros particulares //AHORA SON LAS OPCIONES
             intent = new Intent(this, SettingsActivity.class);
