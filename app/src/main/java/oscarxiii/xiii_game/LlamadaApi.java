@@ -60,7 +60,6 @@ public class LlamadaApi extends AppCompatActivity {
     public LlamadaApi(){
         super();
     }
-    //public void getsteamID(final ArrayAdapter adapter, String nombre_perfil){
     public void getsteamID(String nombrePerfil){
         System.out.println("\n\n=?????????=========????????========= " + nombrePerfil);
         //Hacemos una llamada
@@ -163,7 +162,7 @@ public class LlamadaApi extends AppCompatActivity {
             public void onResponse(Response<SteamLogrosGenerales> response, Retrofit retrofit) {
                 if(response.isSuccess()) {
                     SteamLogrosGenerales appLogro = response.body();
-                    System.out.println("Nombre Juego: "+appLogro.getGame().getGameName());
+                    System.out.println("Nombre Juego: " + appLogro.getGame().getGameName());
                     for (int i=0; i<appLogro.getGame().getAvailableGameStats().getAchievements().size(); i++){
                         System.out.println("Nombre: " + appLogro.getGame().getAvailableGameStats().getAchievements().get(i).getDisplayName());
                         System.out.println("Icono: " + appLogro.getGame().getAvailableGameStats().getAchievements().get(i).getIcon());
@@ -178,22 +177,55 @@ public class LlamadaApi extends AppCompatActivity {
         });
     }
 
-    public void getSteamAppsCompradas(String appid){
-        //Hacemos una llamada
-        Call<SteamJuegosComprados> LogrosGenCall = serviceAppsCompradas.steamAppsCompradas(appid);
-        LogrosGenCall.enqueue(new Callback<SteamJuegosComprados>() {
+    public void getSteamAppsCompradas(String nombrePerfil){
+        //Hacemos una llamada al perfil
+        Call<SteamIDs> IDCall = servicePerfil.steamIDs(nombrePerfil);
+        IDCall.enqueue(new Callback<SteamIDs>() {
             @Override
-            public void onResponse(Response<SteamJuegosComprados> response, Retrofit retrofit) {
-                if(response.isSuccess()) {
-                    SteamJuegosComprados appsCompradas = response.body();
-                    System.out.println("Numero de juegos comprados: " + appsCompradas.getResponse().getGameCount());
-                    for (int i=0; i<appsCompradas.getResponse().getGames().size(); i++){
-                        System.out.println("Nombre: " + appsCompradas.getResponse().getGames().get(i).getAppid());
-                        System.out.println("Tiempo total: " + appsCompradas.getResponse().getGames().get(i).getPlaytimeForever());
-                    }
+            public void onResponse(Response<SteamIDs> response, Retrofit retrofit) {
+                if (response.isSuccess()) {
+                    SteamIDs perfilID = response.body();
+                    //Hacemos la llamada a los juegos comprados
+                    Call<SteamJuegosComprados> LogrosGenCall = serviceAppsCompradas.steamAppsCompradas(perfilID.getResponse().getSteamid());
+                    LogrosGenCall.enqueue(new Callback<SteamJuegosComprados>() {
+                        @Override
+                        public void onResponse(Response<SteamJuegosComprados> response, Retrofit retrofit) {
+                            if(response.isSuccess()) {
+                                SteamJuegosComprados appsCompradas = response.body();
+                                System.out.println("Numero de juegos comprados: " + appsCompradas.getResponse().getGameCount());
+                                for (int i=0; i<appsCompradas.getResponse().getGames().size(); i++){
+                                    final int idJuego =  appsCompradas.getResponse().getGames().get(i).getAppid();
+                                    //Hacemos la llamada a la lista de juegos
+                                    Call<SteamAppList> AppsCall = serviceApps.steamApps();
+                                    AppsCall.enqueue(new Callback<SteamAppList>() {
+                                        @Override
+                                        public void onResponse(Response<SteamAppList> response, Retrofit retrofit) {
+                                            if (response.isSuccess()) {
+                                                SteamAppList appName = response.body();
+                                                for (int i=0; i<appName.getApplist().getApps().size(); i++){
+                                                    //COmparamos la ID de los juegos comprados con la lista de juegos
+                                                    if (appName.getApplist().getApps().get(i).getAppid().equals(idJuego)){
+                                                        System.out.println("Nombre: " + appName.getApplist().getApps().get(i).getName());
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        @Override
+                                        public void onFailure(Throwable t) {
+                                            Log.w(null, Arrays.toString(t.getStackTrace()));
+                                        }
+                                    });
+                                    System.out.println("Tiempo total: " + appsCompradas.getResponse().getGames().get(i).getPlaytimeForever());
+                                }
+                            }
+                        }
+                        @Override
+                        public void onFailure(Throwable t) {
+                            Log.w(null, Arrays.toString(t.getStackTrace()));
+                        }
+                    });
                 }
             }
-
             @Override
             public void onFailure(Throwable t) {
                 Log.w(null, Arrays.toString(t.getStackTrace()));
@@ -202,13 +234,14 @@ public class LlamadaApi extends AppCompatActivity {
     }
 
     public void getSteamAmigos(String nombrePerfil){
-        //Hacemos una llamada
+        //Hacemos la llamada para sacar el ID
         Call<SteamIDs> IDCall = servicePerfil.steamIDs(nombrePerfil);
         IDCall.enqueue(new Callback<SteamIDs>() {
             @Override
             public void onResponse(Response<SteamIDs> response, Retrofit retrofit) {
                 if (response.isSuccess()) {
                     SteamIDs perfilID = response.body();
+                    //Hacemos la llamada para mostrar la lista de amigos
                     Call<SteamAmigos> AmigosCall = serviceAmigos.steamAmigos(perfilID.getResponse().getSteamid());
                     AmigosCall.enqueue(new Callback<SteamAmigos>() {
                         @Override
@@ -217,9 +250,8 @@ public class LlamadaApi extends AppCompatActivity {
                                 SteamAmigos listaAmigos = response.body();
                                 System.out.println("Numero de Amigos: " + listaAmigos.getFriendslist().getFriends().size());
                                 for (int i=0; i<listaAmigos.getFriendslist().getFriends().size(); i++){
-
+                                    //Hacemos la llamada para sacar los nombres de los amigos
                                     Call<SteamPlayer> NombreCall = servicePerfil.steamPerfil(listaAmigos.getFriendslist().getFriends().get(i).getSteamid());
-
                                     NombreCall.enqueue(new Callback<SteamPlayer>() {
                                         @Override
                                         public void onResponse(Response<SteamPlayer> response, Retrofit retrofit) {
@@ -251,12 +283,6 @@ public class LlamadaApi extends AppCompatActivity {
                 Log.w(null, Arrays.toString(t.getStackTrace()));
             }
         });
-
-
-
-
-
-
     }
 }
 
