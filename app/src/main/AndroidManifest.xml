@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="oscarxiii.xiii_game">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -35,7 +37,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="oscarxiii.xiii_game.MainActivity" />
         </activity>
-        <activity android:name=".BuscarPerfil"></activity>
+        <activity android:name=".BuscarPerfil" />
+        <activity
+            android:name=".TabActivitiFriends"
+            android:label="@string/title_activity_tab_activiti_friends"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="oscarxiii.xiii_game.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

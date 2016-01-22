@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity
             llamada.getsteamID(nombre);
             startActivity(intent);
         } else if (id == R.id.nav_gallery) { //Amigos
-            intent = new Intent(MainActivity.this, ScrollingActivityProfile.class);
+            intent = new Intent(MainActivity.this, TabActivitiFriends.class);
             LlamadaApi llamada = new LlamadaApi();
             llamada.getSteamAmigos(nombre);
             startActivity(intent);
