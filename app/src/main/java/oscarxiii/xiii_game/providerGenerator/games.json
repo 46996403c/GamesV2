@@ -1,0 +1,17 @@
+{
+  "documentation": "Tabla con la lista de juegos",
+  "fields": [
+    {
+      "documentation": "An integer containing the program's ID.",
+      "name": "appid",
+      "type": "Integer",
+      "defaultValue": "0000"
+    },
+    {
+      "documentation": "A string containing the program's publicly facing title.",
+      "name": "name",
+      "type": "String",
+      "defaultValue": "XIII"
+    }
+  ]
+}

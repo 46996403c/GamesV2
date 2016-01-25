@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import java.util.Arrays;
+import java.util.List;
 
 import oscarxiii.xiii_game.json.SteamAmigosAPI.SteamAmigos;
 import oscarxiii.xiii_game.json.SteamAppListAPI.SteamAppList;
@@ -38,6 +39,8 @@ public class LlamadaApi extends AppCompatActivity {
     String locstatecode = null;
     int loccityid = 0;
 
+    private List<String> List_file;
+
     //http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=9DED78B02A80DE9A7062EB2822D42C11&vanityurl=oscarXIII
     //http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=9DED78B02A80DE9A7062EB2822D42C11&steamids=76561198011227808
     final String api_key ="9DED78B02A80DE9A7062EB2822D42C11";
@@ -61,7 +64,6 @@ public class LlamadaApi extends AppCompatActivity {
         super();
     }
     public void getsteamID(String nombrePerfil){
-        System.out.println("\n\n=?????????=========????????========= " + nombrePerfil);
         //Hacemos una llamada
         Call<SteamIDs> IDCall = servicePerfil.steamIDs(nombrePerfil);
         IDCall.enqueue(new Callback<SteamIDs>() {
@@ -78,6 +80,7 @@ public class LlamadaApi extends AppCompatActivity {
                         @Override
                         public void onResponse(Response<SteamPlayer> response, Retrofit retrofit) {
                             if (response.isSuccess()) {
+
                                 SteamPlayer player = response.body();
                                 steamid = player.getResponse().getPlayers().get(0).getSteamid();
                                 communityvisibilitystate = player.getResponse().getPlayers().get(0).getCommunityvisibilitystate();
@@ -96,6 +99,8 @@ public class LlamadaApi extends AppCompatActivity {
                                 loccountrycode = player.getResponse().getPlayers().get(0).getLoccountrycode();
                                 locstatecode = player.getResponse().getPlayers().get(0).getLocstatecode();
                                 loccityid = player.getResponse().getPlayers().get(0).getLoccityid();
+
+                                List_file.add(steamid);
                                 System.out.println(steamid);
                                 System.out.println(communityvisibilitystate);
                                 System.out.println(profilestate);

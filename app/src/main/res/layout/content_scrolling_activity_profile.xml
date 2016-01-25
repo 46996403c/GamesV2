@@ -9,37 +9,11 @@
     tools:showIn="@layout/activity_scrolling_activity_profile">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="steamidTV"
-        android:id="@+id/steamidTV"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp" />
-
-    <!--
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="personanameTV"
-        android:id="@+id/personanameTV"
-        android:layout_marginTop="42dp"
-        android:layout_below="@+id/steamidTV"
-        android:layout_alignLeft="@+id/steamidTV"
-        android:layout_alignStart="@+id/steamidTV" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="realnameTV"
-        android:id="@+id/realnameTV"
-        android:layout_below="@+id/personanameTV"
-        android:layout_alignLeft="@+id/personanameTV"
-        android:layout_alignStart="@+id/personanameTV"
-        android:layout_marginTop="36dp" />
--->
+    <ListView
+        android:id="@+id/LVperfirl"
+        android:scrollbars="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="200dip"
+        android:layout_gravity="fill_vertical">
+    </ListView>
 </android.support.v4.widget.NestedScrollView>

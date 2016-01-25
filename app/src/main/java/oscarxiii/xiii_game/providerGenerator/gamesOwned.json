@@ -1,0 +1,29 @@
+{
+  "documentation": "Tabla juegos comprados",
+  "fields": [
+    {
+      "documentation": "Total number of results.",
+      "name": "game_count",
+      "type": "Integer",
+      "defaultValue": "0000"
+    },
+    {
+      "documentation": "An integer containing the program's ID.",
+      "name": "appid",
+      "type": "Integer",
+      "defaultValue": "0000"
+    },
+    {
+      "documentation": "An integer of the player's playtime in the past 2 weeks, denoted in minutes.",
+      "name": "playtime_forever",
+      "type": "Integer",
+      "defaultValue": "0000"
+    },
+    {
+      "documentation": "An integer of the the player's total playtime, denoted in minutes.",
+      "name": "playtime_2weeks",
+      "type": "Integer",
+      "defaultValue": "0000"
+    }
+  ]
+}

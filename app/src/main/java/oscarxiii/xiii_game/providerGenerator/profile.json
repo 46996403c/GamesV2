@@ -1,0 +1,107 @@
+{
+  "documentation": "Tabla perfil steam",
+  "fields": [
+    {
+      "documentation": "The user's 64 bit ID",
+      "name": "steamid",
+      "type": "String",
+      "defaultValue": "0000"
+    },
+    {
+      "documentation": "An integer that describes the access setting of the profile: 1-Private, 2-Friends only, 3-Friends of Friends, 4-Users Only, 5-Public",
+      "name": "communityvisibilitystate",
+      "type": "Integer",
+      "defaultValue": "0000"
+    },
+    {
+      "documentation": "If set to 1 the user has configured the profile.",
+      "name": "profilestate",
+      "type": "Integer",
+      "defaultValue": "0000"
+    },
+    {
+      "documentation": "User's display name.",
+      "name": "personaname",
+      "type": "String",
+      "defaultValue": "XIII"
+    },
+    {
+      "documentation": "A unix timestamp of when the user was last online.",
+      "name": "lastlogoff",
+      "type": "Integer",
+      "defaultValue": "0000"
+    },
+    {
+      "documentation": "The URL to the user's Steam Community profile.",
+      "name": "profileurl",
+      "type": "String",
+      "defaultValue": "XIII"
+    },
+    {
+      "documentation": "A 32x32 image",
+      "name": "avatar",
+      "type": "String",
+      "defaultValue": "XIII"
+    },
+    {
+      "documentation": "A 64x64 image",
+      "name": "avatarmedium",
+      "type": "String",
+      "defaultValue": "XIII"
+    },
+    {
+      "documentation": "A 184x184 image",
+      "name": "avatarfull",
+      "type": "String",
+      "defaultValue": "XIII"
+    },
+    {
+      "documentation": "The user's status: 0-Offline (Also set when the profile is Private), 1-Online, 2-Busy, 3-Away, 4-Snooze, 5-Looking to trade, 6-Looking to play",
+      "name": "personastate",
+      "type": "Integer",
+      "defaultValue": "John"
+    },
+    {
+      "documentation": "The user's real name.",
+      "name": "realname",
+      "type": "String",
+      "defaultValue": "XIII"
+    },
+    {
+      "documentation": "The 64 bit ID of the user's primary group.",
+      "name": "primaryclanid",
+      "type": "String",
+      "defaultValue": "XIII"
+    },
+    {
+      "documentation": "A unix timestamp of the date the profile was created.",
+      "name": "timecreated",
+      "type": "Integer",
+      "defaultValue": "0000"
+    },
+    {
+      "documentation": "_Blank",
+      "name": "personastateflags",
+      "type": "Integer",
+      "defaultValue": "0000"
+    },
+    {
+      "documentation": "ISO 3166 code of where the user is located.",
+      "name": "loccountrycode",
+      "type": "String",
+      "defaultValue": "XIII"
+    },
+    {
+      "documentation": "Variable length code representing the state the user is located in.",
+      "name": "locstatecode",
+      "type": "String",
+      "defaultValue": "XIII"
+    },
+    {
+      "documentation": "An integer ID internal to Steam representing the user's city.",
+      "name": "loccityid",
+      "type": "String",
+      "defaultValue": "XIII"
+    }
+  ]
+}

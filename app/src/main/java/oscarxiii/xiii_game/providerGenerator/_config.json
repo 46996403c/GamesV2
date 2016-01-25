@@ -1,0 +1,13 @@
+{
+  "syntaxVersion": 3,
+  "projectPackageId": "oscarxiii.xiii_game",
+  "authority": "oscarxiii.xiii_game.provider",
+  "providerJavaPackage": "oscarxiii.xiii_game.provider",
+  "providerClassName": "GamesProvider",
+  "sqliteOpenHelperClassName": "GamesSQLiteOpenHelper",
+  "sqliteOpenHelperCallbacksClassName": "FamesSQLiteOpenHelperCallbacks",
+  "databaseFileName": "gamesXIII.db",
+  "databaseVersion": 1,
+  "enableForeignKeys": true,
+  "useAnnotations": true
+}
